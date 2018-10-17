@@ -1,0 +1,14 @@
+<div class="post-row">
+  <a href="#" class="profile-picture"><img src="https://via.placeholder.com/50x50" width="50" height="50"></a>
+  <div class="post-body">
+    <div class="mt-0"><a href="#"><span class="display-name"><%= post.display_name %></span> <span class="username">@<%= post.username %></span></a> &middot; <a href="#" class="created-at"><%= time_ago_in_words post.created_at %></a></div>
+    <p><%= simple_format(post.content) %></p>
+    <div class="images"></div>
+    <div class="actions">
+      <a href="#"><%= fa_icon "comment" %> Reply</a>
+      <a href="#"><%= fa_icon "retweet" %> Repost</a>
+      <a href="#"><%= fa_icon "heart" %> Like</a>
+      <a href="#"><%= fa_icon "envelope" %> DM</a>
+    </div>
+  </div>
+</div>

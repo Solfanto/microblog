@@ -1,0 +1,22 @@
+postgresql: &postgresql
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *postgresql
+  database: microblog_dev
+  username: test
+  password:
+
+test:
+  <<: *postgresql
+  database: microblog_test
+  username: test
+  password: 
+    
+production:
+  <<: *postgresql
+  database: myapp_production
+  username: myapp
+  password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>

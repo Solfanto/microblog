@@ -1,0 +1,18 @@
+<div class="panel profile">
+  <div class="display-name"><%= current_user.display_name %></div>
+  <div class="username">@<%= current_user.username %></div>
+  <div class="row">
+    <div class="col">
+      <div>Posts</div>
+      <div class="count"><%= current_user.posts_count %></div>
+    </div>
+    <div class="col">
+      <div>Following</div>
+      <div class="count"><%= current_user.following_count %></div>
+    </div>
+    <div class="col">
+      <div>Followers</div>
+      <div class="count"><%= current_user.followers_count %></div>
+    </div>
+  </div>
+</div>
