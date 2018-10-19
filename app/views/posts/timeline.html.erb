@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md">
+  <div class="col-lg-1">
     <%= render partial: "panels/profile" %>
   </div>
-  <div class="col-md-2">
+  <div class="col-lg-2">
     <div class="panel timeline no-padding">
-      <%= render partial: "shared/new_post_form" %>
-      <%= render partial: "shared/post_row", collection: @posts, as: :post %>
+      <%= render partial: "new_post_form" %>
+      <%= render partial: "post_row", collection: @posts, as: :post %>
     </div>
   </div>
 </div>

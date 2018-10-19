@@ -10,8 +10,9 @@
   </head>
 
   <body>
-    <%= render partial: 'shared/navbar' %>
+    <%= render partial: 'navbar' %>
     <div class="container main">
+      <%= render partial: 'flash_alerts' %>
       <%= yield %>
     </div>
   </body>
