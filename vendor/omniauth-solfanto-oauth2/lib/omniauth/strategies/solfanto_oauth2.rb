@@ -13,7 +13,7 @@ module OmniAuth
       # This is where you pass the options you would pass when
       # initializing your consumer from the OAuth gem.
       option :client_options, {
-        site: "https://oauth2.solfanto.com",
+        site: Rails.env.production? ? "https://oauth2.solfanto.com" : "http://localhost:3001",
         authorize_path: "/oauth/authorize"
       }
 
@@ -22,7 +22,7 @@ module OmniAuth
       # additional calls (if the user id is returned with the token
       # or as a URI parameter). This may not be possible with all
       # providers.
-      uid{ raw_info['application']['uid'] }
+      uid { raw_info['uid'] }
 
       info do
         {

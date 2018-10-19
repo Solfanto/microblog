@@ -14,7 +14,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         elsif provider == :solfanto_oauth2
           session["devise.#{provider}_data"] = request.env["omniauth.auth"]
         end
-        redirect_to new_user_registration_url
+        redirect_to new_user_registration_url, flash: { error: @user.errors.full_messages.to_sentence }
       end
     end
   end
@@ -24,6 +24,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    redirect_to root_path
+    redirect_to root_path, flash: { error: "Authentication failed." }
   end
 end

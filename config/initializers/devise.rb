@@ -259,7 +259,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   config.omniauth :facebook, Rails.application.credentials.facebook_app_id, Rails.application.credentials.facebook_app_secret, token_params: { parse: :json }
   config.omniauth :twitter, Rails.application.credentials.twitter_api_key, Rails.application.credentials.twitter_api_secret_key
-  config.omniauth :solfanto_oauth2, Rails.application.credentials.solfanto_oauth2_uid, Rails.application.credentials.solfanto_oauth2_secret, { strategy_class: OmniAuth::Strategies::SolfantoOAuth2 }
+  config.omniauth :solfanto_oauth2, Rails.application.credentials[Rails.env.to_sym][:solfanto_oauth2_uid], Rails.application.credentials[Rails.env.to_sym][:solfanto_oauth2_secret], { strategy_class: OmniAuth::Strategies::SolfantoOAuth2 }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
