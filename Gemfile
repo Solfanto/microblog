@@ -7,6 +7,7 @@ ruby '2.5.1'
 gem 'rails', '~> 5.2.1'
 # Use pg as the database for Active Record
 gem 'pg'
+gem 'pg_search'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -40,6 +41,8 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-solfanto-oauth2', path: 'vendor/omniauth-solfanto-oauth2'
+
+gem 'kaminari'
 
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development

@@ -31,14 +31,16 @@
       </ul>
       
       <ul class="navbar-nav">
+        <% unless controller.controller_name == "search" && controller.action_name == "new" %>
         <li class="nav-item">
           <form action="<%= search_path %>" method="get" accept-charset="UTF-8" class="form-inline my-2 my-md-0 input-group mb-3" role="search">
-            <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search" aria-describedby="search-button-addon" value="<%= params[:search] %>">
+            <input name="q" class="form-control" type="search" placeholder="Search" aria-label="Search" aria-describedby="search-button-addon" value="<%= params[:q] %>">
             <div class="input-group-append">
               <button class="btn btn-primary" id="search-button-addon" type="submit"><%= fa_icon "search" %></button>
             </div>
           </form>
         </li>
+        <% end %>
         <% if current_user %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle ml-2 mr-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

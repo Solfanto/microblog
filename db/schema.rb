@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_224136) do
+ActiveRecord::Schema.define(version: 2018_10_19_153843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "blocks", force: :cascade do |t|
     t.bigint "user_id"
@@ -95,6 +96,7 @@ ActiveRecord::Schema.define(version: 2018_10_16_224136) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "to_tsvector('english'::regconfig, content)", name: "posts_content_index", using: :gin
     t.index ["original_post_id"], name: "index_posts_on_original_post_id"
     t.index ["original_user_id"], name: "index_posts_on_original_user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -128,6 +130,7 @@ ActiveRecord::Schema.define(version: 2018_10_16_224136) do
     t.boolean "private_account", default: false
     t.datetime "banned_at"
     t.integer "medias_count", default: 0
+    t.index "to_tsvector('english'::regconfig, (bio)::text)", name: "users_bio_index", using: :gin
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
