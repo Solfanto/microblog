@@ -19,4 +19,7 @@ Rails.application.routes.draw do
   
   # Posts
   resources :posts, only: [:show, :new, :create, :destroy]
+  
+  # Static
+  get 'about', to: 'static#about'
 end
