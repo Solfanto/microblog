@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-lg-1">
+    <%= render partial: "panels/profile", locals: { user: @user } %>
+  </div>
+  <div class="col-lg-2">
+    <div class="panel timeline no-padding">
+      <h1>Following</h1>
+      <%= render partial: "user_row", collection: @users, as: :user %>
+    </div>
+  </div>
+</div>

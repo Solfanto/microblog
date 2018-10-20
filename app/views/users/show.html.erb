@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-lg-1">
+    <%= render partial: "panels/profile", locals: { user: @user } %>
+  </div>
+  <div class="col-lg-2">
+    <div class="panel timeline no-padding">
+      <ul class="nav">
+        <li class="nav-item">
+          <span class="nav-link active">Posts</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Posts & replies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Media</a>
+        </li>
+      </ul>
+      <%= render partial: "post_row", collection: @posts, as: :post %>
+    </div>
+  </div>
+</div>

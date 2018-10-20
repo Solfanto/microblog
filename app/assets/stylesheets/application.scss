@@ -19,12 +19,23 @@ $dark:           #10171e;
 $grid-columns:         3;
 $grid-gutter-width: 10px;
 
+$font-size-base: 0.875rem;
+
 @import "font-awesome";
 @import "bootstrap";
 
 body {
   background-color: $dark;
   color: white;
+}
+
+small, .small {
+  font-size: 90%;
+  font-weight: inherit;
+}
+
+a.disabled, span.nav-link {
+  cursor: default;
 }
 
 .navbar {
@@ -47,7 +58,7 @@ body {
   color: $primary;
 }
 
-.post-row {
+.post-row, .user-row {
   padding-left: 70px;
   .profile-picture {
     float: left;
@@ -60,6 +71,26 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
+  
+  .user {
+    a, a:hover {
+      color: white;
+      text-decoration: none;
+    }
+  
+    a:hover .display-name {
+      color: $primary;
+      text-decoration: underline;
+    }
+    
+    .display-name {
+      font-weight: 600;
+    }
+  }
+  
+  .content, .bio {
+    font-weight: 300;
+  }
 }
 
 .main {
@@ -88,6 +119,13 @@ body {
     .new_post {
       padding: 10px;
     }
+  }
+  
+  h1 {
+    padding-left: 10px;
+    padding-top: 6px;
+    padding-right: 10px;
+    font-size: 1.25rem;
   }
 }
 

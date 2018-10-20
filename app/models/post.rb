@@ -1,10 +1,14 @@
 class Post < ApplicationRecord
   belongs_to :user, optional: true, counter_cache: true
+  has_many :media, dependent: :destroy
   
   before_create :set_user_info
   
   include PgSearch
   pg_search_scope :search, against: [:content], using: {tsearch: {dictionary: "english"}}, ignoring: :accents
+  
+  validates :username, presence: true
+  validates :display_name, presence: true
   
   def self.text_search(query)
     if query.present?

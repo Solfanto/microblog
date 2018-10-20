@@ -1,0 +1,29 @@
+<div class="user-row">
+  <div class="post-body">
+    <div class="user">
+      <a href="<%= user_path(username: user.username) %>">
+        <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+        <span class="display-name"><%= user.display_name %></span>
+        <small class="username">@<%= user.username %></small>
+      </a>
+      <% if controller.action_name != "followers" && current_user && user&.follow?(current_user) %>
+        &middot;
+        <span class="badge badge-pill badge-light">follows you</span>
+      <% end %>
+    </div>
+    <%= simple_format(user.bio, class: "bio") %>
+    <div class="actions text-right">
+      <% if current_user && user != current_user %>
+        <% if !current_user.follow?(user) %>
+          <%= form_tag follow_path(username: user.username), method: "post" do %>
+            <%= submit_tag "Follow", class: "btn btn-outline-primary btn-sm" %>
+          <% end %>
+        <% else%>
+          <%= form_tag follow_path(username: user.username), method: "delete" do %>
+            <%= submit_tag "Unfollow", class: "btn btn-light btn-sm" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
