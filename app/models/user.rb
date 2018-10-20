@@ -17,6 +17,7 @@ class User < ApplicationRecord
   before_create :set_tmp_username
   
   validates :username, format: { with: /\A[a-zA-Z0-9_]+\Z/ }
+  validates :display_name, presence: true
   
   def private_timeline_posts
     @private_timeline_posts ||= Post.where(user: [self] + self.followings).order('created_at DESC')
