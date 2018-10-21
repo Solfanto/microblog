@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_153843) do
+ActiveRecord::Schema.define(version: 2018_10_21_125817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,12 @@ ActiveRecord::Schema.define(version: 2018_10_19_153843) do
     t.index ["user_id"], name: "index_mentions_on_user_id"
   end
 
+  create_table "post_threads", force: :cascade do |t|
+    t.jsonb "tree", default: {}, comment: "{\"id\": 1, content: \"\", replies: []}"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "original_user_id"
     t.bigint "user_id"
@@ -96,9 +102,11 @@ ActiveRecord::Schema.define(version: 2018_10_19_153843) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "post_thread_id"
     t.index "to_tsvector('english'::regconfig, content)", name: "posts_content_index", using: :gin
     t.index ["original_post_id"], name: "index_posts_on_original_post_id"
     t.index ["original_user_id"], name: "index_posts_on_original_user_id"
+    t.index ["post_thread_id"], name: "index_posts_on_post_thread_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

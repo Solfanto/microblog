@@ -18,6 +18,8 @@ $light:          #38444d;
 $dark:           #10171e;
 $grid-columns:         3;
 $grid-gutter-width: 10px;
+$modal-content-bg: #1c2938;
+$modal-header-border-color: $light;
 
 $font-size-base: 0.875rem;
 
@@ -42,6 +44,19 @@ a.disabled, span.nav-link {
   color: $light;
   .navbar-brand {
     font-size: 18px;
+  }
+}
+
+.modal-dark {
+  .close {
+    color: white;
+    &:not(:disabled):not(.disabled):hover {
+      color: inherit;
+      opacity: 1;
+    }
+  }
+  hr {
+    border-top-color: $light;
   }
 }
 
@@ -91,6 +106,14 @@ a.disabled, span.nav-link {
   .content, .bio {
     font-weight: 300;
   }
+  
+  &[data-target] {
+    cursor: pointer;
+  }
+  
+  &:hover {
+    background-color: darken(#1c2938, 4%);
+  }
 }
 
 .main {
@@ -118,6 +141,10 @@ a.disabled, span.nav-link {
     
     .new_post {
       padding: 10px;
+      
+      textarea:invalid {
+        box-shadow: none;
+      }
     }
   }
   
@@ -132,6 +159,14 @@ a.disabled, span.nav-link {
 .panel.profile {
   .display-name {
     font-size: 2em;
+  }
+}
+
+.modal {
+  .original-posts {
+    .post.selected .content {
+      font-size: 2em;
+    }
   }
 }
 

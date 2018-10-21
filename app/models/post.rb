@@ -1,14 +1,23 @@
 class Post < ApplicationRecord
   belongs_to :user, optional: true, counter_cache: true
+  belongs_to :original_user, class_name: 'User', optional: true
+  belongs_to :original_post, class_name: 'Post', optional: true
+  belongs_to :post_thread
   has_many :media, dependent: :destroy
+  has_many :replies, class_name: 'Post', foreign_key: :original_post
   
-  before_create :set_user_info
+  before_validation :set_user_info, on: :create 
+  before_validation :set_post_thread, on: :create 
+  after_commit :update_post_thread, on: :create
   
   include PgSearch
   pg_search_scope :search, against: [:content], using: {tsearch: {dictionary: "english"}}, ignoring: :accents
   
   validates :username, presence: true
   validates :display_name, presence: true
+  validates :content, presence: true
+  
+  attr_accessor :current
   
   def self.text_search(query)
     if query.present?
@@ -18,8 +27,68 @@ class Post < ApplicationRecord
     end
   end
   
+  def as_json(options={})
+    {
+      id: self.id,
+      userId: self.user_id,
+      username: self.username,
+      displayName: self.display_name,
+      likesCount: self.likes_count,
+      repostsCount: self.reposts_count,
+      private: self.private,
+      repost: self.repost,
+      content: self.content,
+      createdAt: self.created_at.httpdate,
+      current: self.current
+    }
+  end
+  
+  def tree
+    t = self.post_thread.tree
+    path = t.search({"id" => self.id})
+    t.dig(*path)&.store("current", true) unless path.nil?
+    t
+  end
+  
+  # TODO: requires pagination
+  # array of Posts
+  def full_thread
+    t = self.post_thread.tree
+    t.nested_values("id").map{|id|
+      p = Post.find(id)
+      p.current = true if id == self.id
+      p
+    }
+  end
+  
+  protected
+  
   def set_user_info
     self.username = self.user.username
     self.display_name = self.user.display_name
+  end
+  
+  def set_post_thread
+    if self.original_post_id
+      self.post_thread_id = self.original_post.post_thread_id
+    else
+      self.post_thread = PostThread.create
+    end
+  end
+  
+  def update_post_thread
+    t = self.post_thread.tree
+    if self.original_post_id
+      result = t.search("id" => self.original_post_id)
+      unless result[:path].empty?
+        t.dig(*result[:path])["replies"].push({"id" => self.id, "replies" => []})
+      else
+        t["replies"].push({"id" => self.id, "replies" => []})
+      end
+    else
+      t = {"id" => self.id, "replies" => []}
+    end
+    self.post_thread.tree = t
+    self.post_thread.save
   end
 end

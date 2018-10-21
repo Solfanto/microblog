@@ -1,4 +1,5 @@
-<div class="post-row">
+<% options = (post.original_post_id && post.original_user_id || post.replies.count > 0) ? { 'data-toggle' => 'modal', 'data-target' => '#threadModal', 'data-json' => "#thread-for-post-#{post.id}" } : {} %>
+<%= content_tag(:div, options.merge(class: 'post-row')) do %>
   <div class="post-body">
     <div class="user">
       <a href="<%= user_path(username: post.username) %>">
@@ -6,9 +7,17 @@
         <span class="display-name"><%= post.display_name %></span>
         <small class="username">@<%= post.username %></small>
       </a>
-      &middot;
-      <a href="#" class="created-at"><small><%= time_ago_in_words post.created_at %></small></a>
+      <small>
+        &middot;
+        <a href="#" class="created-at"><%= time_ago_in_words post.created_at %></a>
+      </small>
     </div>
+    <% if post.original_post_id && post.original_user_id %>
+      <div class="text-muted"><em>Replying to @<%= post.original_user.username %></em></div>
+    <% end %>
+    <script id="thread-for-post-<%= post.id %>" class="json-data" type="application/json">
+      <%= post.full_thread.to_json.html_safe %>
+    </script>
     <%= simple_format(post.content, class: "content") %>
     <% unless post.media.empty? %>
       <div class="images">
@@ -16,10 +25,10 @@
       </div>
     <% end %>
     <div class="actions">
-      <a href="#"><%= fa_icon "comment" %> Reply</a>
-      <a href="#"><%= fa_icon "retweet" %> Repost</a>
-      <a href="#"><%= fa_icon "heart" %> Like</a>
-      <a href="#"><%= fa_icon "envelope" %> DM</a>
+      <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>"><%= fa_icon "comment" %> Reply</a>
+      <a href="javascript:;" data-action="repost"><%= fa_icon "retweet" %> Repost</a>
+      <a href="javascript:;" data-action="like"><%= fa_icon "heart" %> Like</a>
+      <a href="javascript:;" data-action="privateMessage"><%= fa_icon "envelope" %> PM</a>
     </div>
   </div>
-</div>
+<% end %>

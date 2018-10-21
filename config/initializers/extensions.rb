@@ -1,0 +1,1 @@
+Dir[Rails.root.join *%w(lib extensions *)].each {|file| require file }

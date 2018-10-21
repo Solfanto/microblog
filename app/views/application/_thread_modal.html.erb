@@ -1,0 +1,47 @@
+<div class="modal modal-dark fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <%= form_tag posts_path, method: "post" do %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="replyModalLabel">Thread</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="original-posts"></div>
+          <div class="reply">
+            <input type="hidden" name="original_post_id">
+            <input type="hidden" name="original_user_id">
+            <input type="hidden" name="post[type]" value="reply">
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Replying to <span class="username">{{username}}</span></label>
+              <textarea name="post[content]" class="form-control" id="message-text"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+          <button type="submit" class="btn btn-primary">Reply</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <script id="thread-post-template" type="text/template">
+    <div class="post">
+      <div class="user">
+        <a href="#">
+          <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+          <span class="display-name">{{displayName}}</span>
+          <small class="username">{{username}}</small>
+        </a>
+        <small>
+          &middot;
+          <a href="#" class="created-at">{{createdAt}}</a>
+        </small>
+      </div>
+      <p class="content"></p>
+    </div>
+    <hr>
+  </script>
+</div>

@@ -6,6 +6,8 @@
   <div class="col-lg-2">
     <div class="panel timeline no-padding">
       <%= render partial: "new_post_form" %>
+      <%= render partial: "reply_modal_form" %>
+      <%= render partial: "thread_modal" %>
       <%= render partial: "post_row", collection: @posts, as: :post %>
     </div>
   </div>

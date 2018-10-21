@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   
   # Posts
   resources :posts, only: [:show, :new, :create, :destroy]
+  get 'posts', to: redirect('/')
   
   # Static
   get 'about', to: 'static#about'
