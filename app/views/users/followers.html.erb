@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-lg-1">
     <%= render partial: "panels/profile", locals: { user: @user } %>
-    <%= render partial: "panels/footer" %>
+    <%= render partial: "panels/footer", locals: { only_sidebar: true } %>
   </div>
   <div class="col-lg-2">
     <div class="panel timeline no-padding">
