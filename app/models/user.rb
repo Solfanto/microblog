@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :followings, class_name: 'User', through: :follows
   has_many :follow_backs, class_name: 'Follow', foreign_key: :following
   has_many :followers, class_name: 'User', through: :follow_backs, source: :user
+  has_many :likes
+  has_many :liked_posts, class_name: 'Post', through: :likes, source: :post
   
   before_create :set_tmp_username
   
@@ -51,20 +53,33 @@ class User < ApplicationRecord
     end
   end
   
-  def follow?(user)
-    Follow.where(user: self, following: user).count > 0
+  def follow?(user_params)
+    if user_params.is_a?(Integer)
+      user_id = user_params
+    elsif user_params.is_a?(String)
+      user_id = User.find_by(username: user_params)&.id
+    elsif user_params.is_a?(User)
+      user_id = user_params.id
+    else
+      return nil
+    end
+    Follow.where(user_id: self.id, following_id: user_id).count > 0
   end
   memoize :follow?
   
   def follow(user_params)
-    if user_params.is_a?(String)
-      user = User.find_by(username: user_params)
+    if user_params.is_a?(Integer)
+      user_id = user_params
+    elsif user_params.is_a?(String)
+      user_id = User.find_by(username: user_params)&.id
+    elsif user_params.is_a?(User)
+      user_id = user_params.id
     else
-      user = user_params
+      return nil
     end
-    return if self.follow?(user)
-    follow = Follow.new(user: self, following: user)
-    follow_back = Follow.where(user: user, following: self).first
+    return nil if self.follow?(user_id)
+    follow = Follow.new(user_id: self.id, following_id: user_id)
+    follow_back = Follow.where(user_id: user_id, following_id: self.id).first
     if follow_back
       follow_back.friend = true
       follow.friend = true
@@ -77,14 +92,18 @@ class User < ApplicationRecord
   end
   
   def unfollow(user_params)
-    if user_params.is_a?(String)
-      user = User.find_by(username: user_params)
+    if user_params.is_a?(Integer)
+      user_id = user_params
+    elsif user_params.is_a?(String)
+      user_id = User.find_by(username: user_params)&.id
+    elsif user_params.is_a?(User)
+      user_id = user_params.id
     else
-      user = user_params
+      return nil
     end
-    follow = Follow.where(user: self, following: user).first
-    return if follow.nil?
-    follow_back = Follow.where(user: user, following: self).first
+    follow = Follow.where(user_id: self.id, following_id: user_id).first
+    return nil if follow.nil?
+    follow_back = Follow.where(user_id: user_id, following_id: self.id).first
     if follow_back
       follow_back.friend = false
       follow.friend = false
