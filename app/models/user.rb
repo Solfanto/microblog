@@ -54,29 +54,17 @@ class User < ApplicationRecord
   end
   
   def follow?(user_params)
-    if user_params.is_a?(Integer)
-      user_id = user_params
-    elsif user_params.is_a?(String)
-      user_id = User.find_by(username: user_params)&.id
-    elsif user_params.is_a?(User)
-      user_id = user_params.id
-    else
-      return nil
-    end
+    user_id = user_id_from_params(user_params)
+    return nil if user_id.nil?
+    
     Follow.where(user_id: self.id, following_id: user_id).count > 0
   end
   memoize :follow?
   
   def follow(user_params)
-    if user_params.is_a?(Integer)
-      user_id = user_params
-    elsif user_params.is_a?(String)
-      user_id = User.find_by(username: user_params)&.id
-    elsif user_params.is_a?(User)
-      user_id = user_params.id
-    else
-      return nil
-    end
+    user_id = user_id_from_params(user_params)
+    return nil if user_id.nil?
+    
     return nil if self.follow?(user_id)
     follow = Follow.new(user_id: self.id, following_id: user_id)
     follow_back = Follow.where(user_id: user_id, following_id: self.id).first
@@ -92,15 +80,9 @@ class User < ApplicationRecord
   end
   
   def unfollow(user_params)
-    if user_params.is_a?(Integer)
-      user_id = user_params
-    elsif user_params.is_a?(String)
-      user_id = User.find_by(username: user_params)&.id
-    elsif user_params.is_a?(User)
-      user_id = user_params.id
-    else
-      return nil
-    end
+    user_id = user_id_from_params(user_params)
+    return nil if user_id.nil?
+
     follow = Follow.where(user_id: self.id, following_id: user_id).first
     return nil if follow.nil?
     follow_back = Follow.where(user_id: user_id, following_id: self.id).first
@@ -128,6 +110,21 @@ class User < ApplicationRecord
       self.username ||= tmp_username
       self.display_name ||= tmp_username
       break if User.where(username: tmp_username).count == 0
+    end
+  end
+  
+  def user_id_from_params(params)
+    return case params
+    when Integer
+      params
+    when User
+      params.id
+    when String
+      User.find_by(username: params)&.id
+    when /\A\d+\z/
+      params.to_i
+    else
+      nil
     end
   end
 end
