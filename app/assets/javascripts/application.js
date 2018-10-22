@@ -23,35 +23,39 @@
 
 $(document).on('turbolinks:load', function() {
   
-  // On post thread modal
-  $('#threadModal').on('show.bs.modal', function (event) {
-    var modal = $(this);
-    var targetId = $(event.relatedTarget).data('json');
-    var data = JSON.parse(document.querySelector(targetId).innerText);
+  // Open post thread modal
+  $('[data-action="openThread"]').on('click', function (event) {
+    if (!$(event.target).is('a')) {
+      var modal = $('#threadModal');
+      modal.modal('show');
+      
+      var targetId = $(this).data('json');
+      var data = JSON.parse(document.querySelector(targetId).innerText);
 
-    var template = modal.find('#thread-post-template').html();
-    var container = modal.find('.original-posts');
-    container.html('');
-    
-    var selectedPost;
-    
-    data.forEach(function(post){
-      var postDiv = $(template);
-      postDiv.find('.display-name').text(post.displayName);
-      postDiv.find('.username').text('@' + post.username);
-      postDiv.find('.created-at').text(post.createdAt);
-      postDiv.find('.content').text(post.content);
-      container.append(postDiv);
-      if (post.current) {
-        selectedPost = post;
-        postDiv.addClass('selected');
+      var template = modal.find('#thread-post-template').html();
+      var container = modal.find('.original-posts');
+      container.html('');
+
+      var selectedPost;
+
+      data.forEach(function(post){
+        var postDiv = $(template);
+        postDiv.find('.display-name').text(post.displayName);
+        postDiv.find('.username').text('@' + post.username);
+        postDiv.find('.created-at').text(post.createdAt);
+        postDiv.find('.content').text(post.content);
+        container.append(postDiv);
+        if (post.current) {
+          selectedPost = post;
+          postDiv.addClass('selected');
+        }
+      });
+
+      if (typeof selectedPost != "undefined") {
+        modal.find('.username').text('@' + selectedPost.username);
+        modal.find('input[name="original_post_id"]').val(selectedPost.id);
+        modal.find('input[name="original_user_id"]').val(selectedPost.userId);
       }
-    });
-    
-    if (typeof selectedPost != "undefined") {
-      modal.find('.username').text('@' + selectedPost.username);
-      modal.find('input[name="original_post_id"]').val(selectedPost.id);
-      modal.find('input[name="original_user_id"]').val(selectedPost.userId);
     }
   });
   $('#threadModal').on('shown.bs.modal', function (event) {

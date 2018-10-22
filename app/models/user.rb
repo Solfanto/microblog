@@ -102,6 +102,28 @@ class User < ApplicationRecord
   end
   memoize :friend_with?
   
+  def like(post_params)
+    post_id = post_id_from_params(post_params)
+    return if post_id.nil?
+    
+    Like.create(user_id: self.id, post_id: post_id)
+  end
+  
+  def unlike(post_params)
+    post_id = post_id_from_params(post_params)
+    return if post_id.nil?
+    
+    Like.where(user_id: self.id, post_id: post_id).destroy_all
+  end
+  
+  def like?(post_params)
+    post_id = post_id_from_params(post_params)
+    return false if post_id.nil?
+    
+    Like.where(user_id: self.id, post_id: post_id).count > 0
+  end
+  memoize :like?
+  
   private
   def set_tmp_username
     o = (['0'..'9'] + ['a'..'z']).map { |i| i.to_a }.flatten
@@ -123,6 +145,19 @@ class User < ApplicationRecord
       params.to_i
     when String
       User.find_by(username: params)&.id
+    else
+      nil
+    end
+  end
+  
+  def post_id_from_params(params)
+    return case params
+    when Integer
+      params
+    when User
+      params.id
+    when /\A\d+\z/
+      params.to_i
     else
       nil
     end

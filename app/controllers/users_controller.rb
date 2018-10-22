@@ -25,4 +25,14 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
     @users = @user.followings
   end
+  
+  def like
+    current_user.like(params[:post_id])
+    redirect_back(fallback_location: root_path)
+  end
+  
+  def unlike
+    current_user.unlike(params[:post_id])
+    redirect_back(fallback_location: root_path)
+  end
 end

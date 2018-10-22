@@ -5,6 +5,7 @@ class Post < ApplicationRecord
   belongs_to :post_thread
   has_many :media, dependent: :destroy
   has_many :replies, class_name: 'Post', foreign_key: :original_post
+  has_many :posts
   
   before_validation :set_user_info, on: :create 
   before_validation :set_post_thread, on: :create 

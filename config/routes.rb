@@ -14,8 +14,11 @@ Rails.application.routes.draw do
   get 'u/:username/followers', to: 'users#followers', as: :followers
   get 'u/:username/following', to: 'users#following', as: :following
   
+  # User actions
   post 'u/:username/follow', to: 'users#follow', as: :follow
   delete 'u/:username/follow', to: 'users#unfollow'
+  post 'p/:post_id/like', to: 'users#like', as: :like
+  delete 'p/:post_id/like', to: 'users#unlike'
   
   # Posts
   resources :posts, only: [:show, :new, :create, :destroy]

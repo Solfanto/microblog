@@ -1,2 +1,6 @@
 class Like < ApplicationRecord
+  belongs_to :user
+  belongs_to :post, counter_cache: true
+  
+  validates :post, uniqueness: { scope: :user }
 end
