@@ -16,7 +16,7 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_posts, class_name: 'Post', through: :likes, source: :post
   
-  before_create :set_tmp_username
+  before_validation :set_tmp_username, on: :create
   
   validates :username, format: { with: /\A[a-zA-Z0-9_]+\Z/ }
   validates :display_name, presence: true
