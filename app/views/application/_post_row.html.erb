@@ -38,9 +38,15 @@
       <footer class="blockquote-footer"><%= post.original_user.display_name %></footer>
     </blockquote>
     <% end %>
-    <% unless post.media.empty? %>
-      <div class="images">
-        
+    <% unless post.attachments.empty? %>
+      <div class="attachments">
+        <% post.attachments.each do |i| %>
+          <% if i.previewable? %>
+            <%= link_to(image_tag(i.preview(resize: "200x200>")), url_for(i), target: "_blank") %>
+          <% elsif i.variable? %>
+            <%= link_to(image_tag(i.variant(resize: "200x200")), url_for(i), target: "_blank") %>
+          <% end %>
+        <% end %>
       </div>
     <% end %>
     <div class="actions">

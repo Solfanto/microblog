@@ -13,7 +13,11 @@
     <%= f.text_area :content, class: "form-control", placeholder: "What's up?", required: true, autofocus: (controller.controller_name == "posts" && controller.action_name == "new") %>
   </div>
   <div class="form-group d-flex justify-content-between">
-    &nbsp;<!-- <a class="btn btn-outline-primary" href="#">Add picture</a> -->
+    <div class="inputfile-group">
+      <%= f.file_field :attachments, multiple: true, direct_upload: true, class: "inputfile", 'data-multiple-caption' => "{count} files selected" %>
+      <label for="post_attachments" class="btn btn-outline-primary"><span>Add picture</span></label>
+    </div>
+
     <%= f.submit "Post", class: "btn btn-primary" %>
   </div>
 <% end %>

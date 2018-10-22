@@ -3,9 +3,9 @@ class Post < ApplicationRecord
   belongs_to :original_user, class_name: 'User', optional: true
   belongs_to :original_post, class_name: 'Post', optional: true
   belongs_to :post_thread
-  has_many :media, dependent: :destroy
   has_many :replies, class_name: 'Post', foreign_key: :original_post
   has_many :posts
+  has_many_attached :attachments
   
   before_validation :set_user_info, on: :create 
   before_validation :set_post_thread, on: :create 
@@ -18,6 +18,7 @@ class Post < ApplicationRecord
   validates :display_name, presence: true
   validates :content, presence: true, unless: :repost?
   validate :cannot_repost_self
+  validates :attachments, blob: { content_type: ['image/gif', 'image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'video/mp4', 'video/webm', 'video/ogg'], size_range: 0..25.megabytes }
   
   attr_accessor :current
   

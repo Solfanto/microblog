@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   end
   
   def create
-    @new_post = current_user.posts.build(params.require(:post).permit(:content))
+    @new_post = current_user.posts.build(params.require(:post).permit(:content, attachments: []))
     @new_post.username = current_user.username
     @new_post.display_name = current_user.display_name
     @new_post.original_post_id = params[:original_post_id]
