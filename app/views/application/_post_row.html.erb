@@ -2,23 +2,42 @@
 <%= content_tag(:div, options.merge(class: 'post-row')) do %>
   <div class="post-body">
     <div class="user">
+      <% if post.repost && post.content.blank? %>
+      <a href="<%= user_path(username: post.original_user.username) %>">
+        <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+        <span class="display-name"><%= post.original_user.display_name %></span>
+        <small class="username">@<%= post.original_user.username %></small>
+      </a>
+      <% else %>
       <a href="<%= user_path(username: post.username) %>">
         <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
         <span class="display-name"><%= post.display_name %></span>
         <small class="username">@<%= post.username %></small>
       </a>
+      <% end %>
       <small>
         &middot;
         <a href="#" class="created-at"><%= time_ago_in_words post.created_at %></a>
       </small>
     </div>
-    <% if post.original_post_id && post.original_user_id %>
+    <% if post.original_post_id && post.original_user_id && !post.repost %>
       <div class="text-muted"><em>Replying to @<%= post.original_user.username %></em></div>
     <% end %>
     <script id="thread-for-post-<%= post.id %>" class="json-data" type="application/json">
       <%= post.full_thread.to_json.html_safe %>
     </script>
+    <% if !post.content.blank? %>
     <%= simple_format(post.content, class: "content") %>
+    <% elsif post.repost && post.content.blank? %>
+    <%= simple_format(post.original_post.content, class: "content") %>
+    <div class="text-muted"><em>Reposted by @<%= post.username %></em></div>
+    <% end %>
+    <% if post.repost && !post.content.blank? %>
+    <blockquote class="blockquote panel">
+      <%= simple_format(post.original_post.content, class: "mb-0") %>
+      <footer class="blockquote-footer"><%= post.original_user.display_name %></footer>
+    </blockquote>
+    <% end %>
     <% unless post.media.empty? %>
       <div class="images">
         
@@ -26,7 +45,7 @@
     <% end %>
     <div class="actions">
       <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>"><%= fa_icon "comment" %> Reply</a>
-      <a href="javascript:;" data-action="repost"><%= fa_icon "retweet" %> Repost</a>
+      <% unless post.user_id == current_user.id || (post.repost? && post.original_user_id == current_user.id) %><a href="javascript:;" data-action="repost" data-json="#thread-for-post-<%= post.id %>"><%= fa_icon "retweet" %> Repost</a><% end %>
       <a href="javascript:;" data-action="like"><%= fa_icon "heart" %> Like</a>
       <a href="javascript:;" data-action="privateMessage"><%= fa_icon "envelope" %> PM</a>
     </div>

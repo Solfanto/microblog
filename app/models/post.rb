@@ -15,7 +15,8 @@ class Post < ApplicationRecord
   
   validates :username, presence: true
   validates :display_name, presence: true
-  validates :content, presence: true
+  validates :content, presence: true, unless: :repost?
+  validate :cannot_repost_self
   
   attr_accessor :current
   
@@ -56,9 +57,15 @@ class Post < ApplicationRecord
     t = self.post_thread.tree
     t.nested_values("id").map{|id|
       p = Post.find(id)
-      p.current = true if id == self.id
+      p.current = true if id == self.id || id == self.original_post_id && self.repost? && self.content.blank?
       p
     }
+  end
+  
+  def cannot_repost_self
+    if self.repost? && self.user_id == self.original_user_id
+      errors.add(:user, "can't repost oneself")
+    end
   end
   
   protected
@@ -77,6 +84,7 @@ class Post < ApplicationRecord
   end
   
   def update_post_thread
+    return if self.content.blank?
     t = self.post_thread.tree
     if self.original_post_id
       result = t.search("id" => self.original_post_id)

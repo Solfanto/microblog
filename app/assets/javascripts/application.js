@@ -48,13 +48,17 @@ $(document).on('turbolinks:load', function() {
       }
     });
     
-    modal.find('.username').text('@' + selectedPost.username);
-    modal.find('input[name="original_post_id"]').val(selectedPost.id);
-    modal.find('input[name="original_user_id"]').val(selectedPost.userId);
+    if (typeof selectedPost != "undefined") {
+      modal.find('.username').text('@' + selectedPost.username);
+      modal.find('input[name="original_post_id"]').val(selectedPost.id);
+      modal.find('input[name="original_user_id"]').val(selectedPost.userId);
+    }
   });
   $('#threadModal').on('shown.bs.modal', function (event) {
     var selectedDiv = $(this).find('.post.selected');
-    $('#threadModal').animate({scrollTop: selectedDiv.offset().top - 50}, 'fast');
+    if (typeof selectedDiv != "undefined") {
+      $('#threadModal').animate({scrollTop: selectedDiv.offset().top - 50}, 'fast');
+    }
   });
   
   // Open reply modal
@@ -66,13 +70,15 @@ $(document).on('turbolinks:load', function() {
     var data = JSON.parse(document.querySelector(targetId).innerText);
     var currentPost = data.find(function(e) { return e.current == true });
     
-    modal.find('.modal-title').text('Reply to @' + currentPost.username);
-    modal.find('.display-name').text(currentPost.displayName);
-    modal.find('.username').text('@' + currentPost.username);
-    modal.find('.created-at').text(currentPost.createdAt);
-    modal.find('.original-post-content').text(currentPost.content);
-    modal.find('input[name="original_post_id"]').val(currentPost.id);
-    modal.find('input[name="original_user_id"]').val(currentPost.userId);
+    if (typeof currentPost != 'undefined') {
+      modal.find('.modal-title').text('Reply to @' + currentPost.username);
+      modal.find('.display-name').text(currentPost.displayName);
+      modal.find('.username').text('@' + currentPost.username);
+      modal.find('.created-at').text(currentPost.createdAt);
+      modal.find('.original-post-content').text(currentPost.content);
+      modal.find('input[name="original_post_id"]').val(currentPost.id);
+      modal.find('input[name="original_user_id"]').val(currentPost.userId);
+    }
 
     event.stopPropagation();
   });
@@ -80,7 +86,25 @@ $(document).on('turbolinks:load', function() {
     $(this).find('textarea[name="post[content]"]').trigger('focus');
   });
   
+  // Open repost modal
   $('[data-action="repost"]').on('click', function (event) {
+    var modal = $('#repostModal');
+    modal.modal('show');
+    
+    var targetId = $(event.target).data('json');
+    var data = JSON.parse(document.querySelector(targetId).innerText);
+    var currentPost = data.find(function(e) { return e.current == true });
+    
+    if (typeof currentPost != 'undefined') {
+      modal.find('.modal-title').text('Reply to @' + currentPost.username);
+      modal.find('.display-name').text(currentPost.displayName);
+      modal.find('.username').text('@' + currentPost.username);
+      modal.find('.created-at').text(currentPost.createdAt);
+      modal.find('.original-post-content').text(currentPost.content);
+      modal.find('input[name="original_post_id"]').val(currentPost.id);
+      modal.find('input[name="original_user_id"]').val(currentPost.userId);
+    }
+    
     event.stopPropagation();
   });
   
