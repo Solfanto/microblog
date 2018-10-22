@@ -44,10 +44,10 @@
       </div>
     <% end %>
     <div class="actions">
-      <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>"><%= fa_icon "comment" %> Reply</a>
-      <% unless post.user_id == current_user.id || (post.repost? && post.original_user_id == current_user.id) %><a href="javascript:;" data-action="repost" data-json="#thread-for-post-<%= post.id %>"><%= fa_icon "retweet" %> Repost</a><% end %>
-      <a href="javascript:;" data-action="like"><%= fa_icon "heart" %> Like</a>
-      <a href="javascript:;" data-action="privateMessage"><%= fa_icon "envelope" %> PM</a>
+      <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>"><%= icon("fas", "comment") %> Reply</a>
+      <% unless post.user_id == current_user.id || (post.repost? && post.original_user_id == current_user.id) %><a href="javascript:;" data-action="repost" data-json="#thread-for-post-<%= post.id %>"><%= icon("fas", "retweet") %> Repost</a><% end %>
+      <a href="javascript:;" data-action="like"><%= icon("far", "heart") %> Like</a>
+      <a href="javascript:;" data-action="privateMessage"><%= icon("fas", "envelope") %> PM</a>
     </div>
   </div>
 <% end %>

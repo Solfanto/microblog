@@ -10,22 +10,22 @@
       <ul class="navbar-nav mr-auto">
         <% if current_user %>
         <li class="nav-item active d-none d-md-block d-lg-none">
-          <a class="nav-link" href="<%= root_path %>"><%= fa_icon "home" %></a>
+          <a class="nav-link" href="<%= root_path %>"><%= icon("fas", "home") %></a>
         </li>
         <li class="nav-item active d-md-none d-lg-block">
-          <a class="nav-link" href="<%= root_path %>"><%= fa_icon "home" %> Home</a>
+          <a class="nav-link" href="<%= root_path %>"><%= icon("fas", "home") %> Home</a>
         </li>
         <li class="nav-item d-none d-md-block d-lg-none">
-          <a class="nav-link" href="#"><%= fa_icon "bell-o" %></a>
+          <a class="nav-link" href="#"><%= icon("far", "bell") %></a>
         </li>
         <li class="nav-item d-md-none d-lg-block">
-          <a class="nav-link" href="#"><%= fa_icon "bell-o" %> Notifications</a>
+          <a class="nav-link" href="#"><%= icon("far", "bell") %> Notifications</a>
         </li>
         <li class="nav-item d-none d-md-block d-lg-none">
-          <a class="nav-link" href="#"><%= fa_icon "envelope-o" %></a>
+          <a class="nav-link" href="#"><%= icon("far", "envelope") %></a>
         </li>
         <li class="nav-item d-md-none d-lg-block">
-          <a class="nav-link" href="#"><%= fa_icon "envelope-o" %> Messages</a>
+          <a class="nav-link" href="#"><%= icon("far", "envelope") %> Messages</a>
         </li>
         <% end %>
       </ul>
@@ -36,7 +36,7 @@
           <form action="<%= search_path %>" method="get" accept-charset="UTF-8" class="form-inline my-2 my-md-0 input-group mb-3" role="search">
             <input name="q" class="form-control" type="search" placeholder="Search" aria-label="Search" aria-describedby="search-button-addon" value="<%= params[:q] %>">
             <div class="input-group-append">
-              <button class="btn btn-primary" id="search-button-addon" type="submit"><%= fa_icon "search" %></button>
+              <button class="btn btn-primary" id="search-button-addon" type="submit"><%= icon("fas", "search") %></button>
             </div>
           </form>
         </li>
