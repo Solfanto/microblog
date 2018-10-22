@@ -119,10 +119,10 @@ class User < ApplicationRecord
       params
     when User
       params.id
-    when String
-      User.find_by(username: params)&.id
     when /\A\d+\z/
       params.to_i
+    when String
+      User.find_by(username: params)&.id
     else
       nil
     end
