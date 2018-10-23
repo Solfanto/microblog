@@ -1,0 +1,2 @@
+$("#infinite-scroll-container").html('<div class="page"><%= escape_javascript(render(partial: "post_row", collection: @posts, as: :post)) %></div>');
+$("#paginator").html('<%= escape_javascript(paginate(@posts, remote: true)) %>');

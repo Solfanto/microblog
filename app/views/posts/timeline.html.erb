@@ -9,7 +9,12 @@
       <%= render partial: "reply_modal" %>
       <%= render partial: "repost_modal" %>
       <%= render partial: "thread_modal" %>
-      <%= render partial: "post_row", collection: @posts, as: :post %>
+      <div id="infinite-scroll-container" class="posts">
+        <div class="page">
+          <%= render partial: "post_row", collection: @posts, as: :post %>
+        </div>
+      </div>
     </div>
+    <%= paginate @posts, remote: true %>
   </div>
 </div>

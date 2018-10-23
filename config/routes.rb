@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   
   # Home
   root to: 'posts#timeline'
+  get 'timeline/:page', to: 'posts#timeline'
   
   # Search
   get 'search', to: 'search#index'

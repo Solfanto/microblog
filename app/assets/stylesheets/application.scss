@@ -175,3 +175,10 @@ a.disabled, span.nav-link {
 .text-white {
   color: white;
 }
+
+.pagination-dark {
+  .page-link, .disabled > .page-link {
+    border-color: $light;
+    background-color: $secondary;
+  }
+}

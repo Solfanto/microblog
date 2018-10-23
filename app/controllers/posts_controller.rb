@@ -2,9 +2,14 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:timeline, :new, :create]
   
   def timeline
-    @posts = current_user.private_timeline_posts
+    @posts = current_user.private_timeline_posts.page(params[:page]).per(25)
     
     @new_post = Post.new(params[:post])
+    
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
   
   def create

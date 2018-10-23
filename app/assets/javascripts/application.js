@@ -19,6 +19,7 @@
 //= require direct_uploads
 //= require turbolinks
 //= require cable
+//= require jquery.infinitescroll
   
 //= require_self
 
@@ -119,5 +120,12 @@ $(document).on('turbolinks:load', function() {
   
   $('[data-action="privateMessage"]').on('click', function (event) {
     event.stopPropagation();
+  });
+  
+  // Infinite scroll
+  $("#infinite-scroll-container .page").infinitescroll({
+    navSelector: "nav.pagination",
+    nextSelector: "nav.pagination a[rel=next]",
+    itemSelector: "#infinite-scroll-container .post-row"
   });
 });
