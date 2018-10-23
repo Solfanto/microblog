@@ -8,12 +8,18 @@ class UsersController < ApplicationController
   
   def follow
     current_user.follow(params[:username])
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+      format.html {redirect_back(fallback_location: root_path)}
+    end
   end
   
   def unfollow
     current_user.unfollow(params[:username])
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+      format.html {redirect_back(fallback_location: root_path)}
+    end
   end
   
   def followers

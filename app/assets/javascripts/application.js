@@ -27,7 +27,7 @@ $(document).on('turbolinks:load', function() {
   
   // Open post thread modal
   $('[data-action="openThread"]').on('click', function (event) {
-    if (!$(event.target).is('a')) {
+    if (!$(event.target).is('a') && !$(event.target).parents('a').length) {
       var modal = $('#threadModal');
       modal.modal('show');
 

@@ -17,13 +17,9 @@
   </div>
   <% if current_user && user != current_user %>
     <% if !current_user.follow?(user) %>
-      <%= form_tag follow_path(username: user.username), method: "post" do %>
-        <%= submit_tag "Follow", class: "btn btn-outline-primary" %>
-      <% end %>
+      <%= link_to "Follow", follow_path(username: user.username), method: "post", remote: true, class: "btn btn-outline-primary" %>
     <% else%>
-      <%= form_tag follow_path(username: user.username), method: "delete" do %>
-        <%= submit_tag "Following", class: "btn btn-primary" %>
-      <% end %>
+      <%= link_to "Following", follow_path(username: user.username), method: "delete", remote: true, class: "btn btn-primary" %>
     <% end %>
   <% end %>
 </div>
