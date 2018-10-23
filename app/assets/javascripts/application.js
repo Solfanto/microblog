@@ -126,6 +126,14 @@ $(document).on('turbolinks:load', function() {
   $("#infinite-scroll-container .page").infinitescroll({
     navSelector: "nav.pagination",
     nextSelector: "nav.pagination a[rel=next]",
-    itemSelector: "#infinite-scroll-container .post-row"
+    itemSelector: "#infinite-scroll-container .post-row",
+    loading: {finished: function(el) {
+      if (!el.state.isBeyondMaxPage) {
+        el.loading.msg.fadeOut(el.loading.speed);
+      }
+      var event = document.createEvent("Events");
+      event.initEvent("turbolinks:load", true, false);
+      document.dispatchEvent(event);
+    }}
   });
 });
