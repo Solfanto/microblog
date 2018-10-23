@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  default_url_options(host: Rails.application.config.action_mailer.default_url_options[:host], port: Rails.application.config.action_mailer.default_url_options[:port])
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'registrations' }
   get 'users', to: redirect('/users/edit')
   

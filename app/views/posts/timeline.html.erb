@@ -6,9 +6,6 @@
   <div class="col-lg-2">
     <div class="panel timeline no-padding">
       <%= render partial: "new_post_form" %>
-      <%= render partial: "reply_modal" %>
-      <%= render partial: "repost_modal" %>
-      <%= render partial: "thread_modal" %>
       <div id="infinite-scroll-container" class="posts">
         <div class="page">
           <%= render partial: "post_row", collection: @posts, as: :post %>

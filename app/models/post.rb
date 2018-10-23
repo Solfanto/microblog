@@ -42,7 +42,13 @@ class Post < ApplicationRecord
       repost: self.repost,
       content: self.content,
       createdAt: self.created_at.httpdate,
-      current: self.current
+      current: self.current,
+      attachments: self.attachments.map { |attachment|
+        {
+          preview_url: (Rails.application.routes.url_helpers.url_for(attachment.preview(resize: "200x200>")) if attachment.previewable?) || (Rails.application.routes.url_helpers.url_for(attachment.variant(resize: "200x200")) if attachment.variable?),
+          url: Rails.application.routes.url_helpers.url_for(attachment)
+        }
+      }
     }
   end
   

@@ -30,7 +30,7 @@ $(document).on('turbolinks:load', function() {
     if (!$(event.target).is('a')) {
       var modal = $('#threadModal');
       modal.modal('show');
-      
+
       var targetId = $(this).data('json');
       var data = JSON.parse(document.querySelector(targetId).innerText);
 
@@ -40,12 +40,16 @@ $(document).on('turbolinks:load', function() {
 
       var selectedPost;
 
-      data.forEach(function(post){
+      data.forEach(function(post) {
         var postDiv = $(template);
         postDiv.find('.display-name').text(post.displayName);
         postDiv.find('.username').text('@' + post.username);
         postDiv.find('.created-at').text(post.createdAt);
         postDiv.find('.content').text(post.content);
+        postDiv.find('.attachments').text('');
+        post.attachments.forEach(function(attachment) {
+          postDiv.find('.attachments').append(`<a href="${attachment.url}" target="_blank"><img src="${attachment.preview_url}"></a>`);
+        });
         container.append(postDiv);
         if (post.current) {
           selectedPost = post;
@@ -82,6 +86,10 @@ $(document).on('turbolinks:load', function() {
       modal.find('.username').text('@' + currentPost.username);
       modal.find('.created-at').text(currentPost.createdAt);
       modal.find('.original-post-content').text(currentPost.content);
+      modal.find('.attachments').text('');
+      currentPost.attachments.forEach(function(attachment) {
+        modal.find('.attachments').append(`<a href="${attachment.url}" target="_blank"><img src="${attachment.preview_url}"></a>`);
+      });
       modal.find('input[name="original_post_id"]').val(currentPost.id);
       modal.find('input[name="original_user_id"]').val(currentPost.userId);
     }
@@ -107,6 +115,10 @@ $(document).on('turbolinks:load', function() {
       modal.find('.username').text('@' + currentPost.username);
       modal.find('.created-at').text(currentPost.createdAt);
       modal.find('.original-post-content').text(currentPost.content);
+      modal.find('.attachments').text('');
+      currentPost.attachments.forEach(function(attachment) {
+        modal.find('.attachments').append(`<a href="${attachment.url}" target="_blank"><img src="${attachment.preview_url}"></a>`);
+      });
       modal.find('input[name="original_post_id"]').val(currentPost.id);
       modal.find('input[name="original_user_id"]').val(currentPost.userId);
     }
