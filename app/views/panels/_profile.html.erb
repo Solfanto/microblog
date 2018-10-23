@@ -1,4 +1,9 @@
 <div class="panel profile">
+  
+  <% if user.profile_picture.attached? && user.profile_picture.variable? %>
+    <%= image_tag(user.squared_profile_picture(120), class: "rounded mx-auto d-block") %>
+  <% end %>
+  
   <div class="display-name"><%= user.display_name %></div>
   <div class="username">@<%= user.username %></div>
   <div class="row">

@@ -31,8 +31,11 @@ $(document).on('turbolinks:load', function() {
       var modal = $('#threadModal');
       modal.modal('show');
 
-      var targetId = $(this).data('json');
-      var data = JSON.parse(document.querySelector(targetId).innerText);
+      var dataContainer = document.querySelector($(this).data('json'));
+      if (dataContainer == null) {
+        return;
+      }
+      var data = JSON.parse(dataContainer.innerText);
 
       var template = modal.find('#thread-post-template').html();
       var container = modal.find('.original-posts');
@@ -42,6 +45,12 @@ $(document).on('turbolinks:load', function() {
 
       data.forEach(function(post) {
         var postDiv = $(template);
+        if (post.profilePicture) {
+          postDiv.find('.profile-picture').attr("src", post.profilePicture).show();
+        }
+        else {
+          postDiv.find('.profile-picture').hide();
+        }
         postDiv.find('.display-name').text(post.displayName);
         postDiv.find('.username').text('@' + post.username);
         postDiv.find('.created-at').text(post.createdAt);
@@ -76,22 +85,31 @@ $(document).on('turbolinks:load', function() {
     var modal = $('#replyModal');
     modal.modal('show');
     
-    var targetId = $(event.target).data('json');
-    var data = JSON.parse(document.querySelector(targetId).innerText);
-    var currentPost = data.find(function(e) { return e.current == true });
+    var dataContainer = document.querySelector($(event.target).data('json'));
+    if (dataContainer == null) {
+      return;
+    }
+    var data = JSON.parse(dataContainer.innerText);
+    var post = data.find(function(e) { return e.current == true });
     
-    if (typeof currentPost != 'undefined') {
-      modal.find('.modal-title').text('Reply to @' + currentPost.username);
-      modal.find('.display-name').text(currentPost.displayName);
-      modal.find('.username').text('@' + currentPost.username);
-      modal.find('.created-at').text(currentPost.createdAt);
-      modal.find('.original-post-content').text(currentPost.content);
+    if (typeof post != 'undefined') {
+      modal.find('.modal-title').text('Reply to @' + post.username);
+      if (post.profilePicture) {
+        modal.find('.profile-picture').attr("src", post.profilePicture).show();
+      }
+      else {
+        modal.find('.profile-picture').hide();
+      }
+      modal.find('.display-name').text(post.displayName);
+      modal.find('.username').text('@' + post.username);
+      modal.find('.created-at').text(post.createdAt);
+      modal.find('.original-post-content').text(post.content);
       modal.find('.attachments').text('');
-      currentPost.attachments.forEach(function(attachment) {
+      post.attachments.forEach(function(attachment) {
         modal.find('.attachments').append(`<a href="${attachment.url}" target="_blank"><img src="${attachment.preview_url}"></a>`);
       });
-      modal.find('input[name="original_post_id"]').val(currentPost.id);
-      modal.find('input[name="original_user_id"]').val(currentPost.userId);
+      modal.find('input[name="original_post_id"]').val(post.id);
+      modal.find('input[name="original_user_id"]').val(post.userId);
     }
 
     event.stopPropagation();
@@ -105,22 +123,31 @@ $(document).on('turbolinks:load', function() {
     var modal = $('#repostModal');
     modal.modal('show');
     
-    var targetId = $(event.target).data('json');
-    var data = JSON.parse(document.querySelector(targetId).innerText);
-    var currentPost = data.find(function(e) { return e.current == true });
+    var dataContainer = document.querySelector($(event.target).data('json'));
+    if (dataContainer == null) {
+      return;
+    }
+    var data = JSON.parse(dataContainer.innerText);
+    var post = data.find(function(e) { return e.current == true });
     
-    if (typeof currentPost != 'undefined') {
-      modal.find('.modal-title').text('Reply to @' + currentPost.username);
-      modal.find('.display-name').text(currentPost.displayName);
-      modal.find('.username').text('@' + currentPost.username);
-      modal.find('.created-at').text(currentPost.createdAt);
-      modal.find('.original-post-content').text(currentPost.content);
+    if (typeof post != 'undefined') {
+      modal.find('.modal-title').text('Reply to @' + post.username);
+      if (post.profilePicture) {
+        modal.find('.profile-picture').attr("src", post.profilePicture).show();
+      }
+      else {
+        modal.find('.profile-picture').hide();
+      }
+      modal.find('.display-name').text(post.displayName);
+      modal.find('.username').text('@' + post.username);
+      modal.find('.created-at').text(post.createdAt);
+      modal.find('.original-post-content').text(post.content);
       modal.find('.attachments').text('');
-      currentPost.attachments.forEach(function(attachment) {
+      post.attachments.forEach(function(attachment) {
         modal.find('.attachments').append(`<a href="${attachment.url}" target="_blank"><img src="${attachment.preview_url}"></a>`);
       });
-      modal.find('input[name="original_post_id"]').val(currentPost.id);
-      modal.find('input[name="original_user_id"]').val(currentPost.userId);
+      modal.find('input[name="original_post_id"]').val(post.id);
+      modal.find('input[name="original_user_id"]').val(post.userId);
     }
     
     event.stopPropagation();

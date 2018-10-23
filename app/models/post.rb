@@ -36,6 +36,7 @@ class Post < ApplicationRecord
       userId: self.user_id,
       username: self.username,
       displayName: self.display_name,
+      profilePicture: (Rails.application.routes.url_helpers.url_for(self.user.squared_profile_picture(50)) if self.user&.profile_picture&.attached? && self.user&.profile_picture&.variable?) || nil,
       likesCount: self.likes_count,
       repostsCount: self.reposts_count,
       private: self.private,
@@ -45,7 +46,7 @@ class Post < ApplicationRecord
       current: self.current,
       attachments: self.attachments.map { |attachment|
         {
-          preview_url: (Rails.application.routes.url_helpers.url_for(attachment.preview(resize: "200x200>")) if attachment.previewable?) || (Rails.application.routes.url_helpers.url_for(attachment.variant(resize: "200x200")) if attachment.variable?),
+          previewUrl: (Rails.application.routes.url_helpers.url_for(attachment.preview(resize: "200x200>")) if attachment.previewable?) || (Rails.application.routes.url_helpers.url_for(attachment.variant(resize: "200x200")) if attachment.variable?),
           url: Rails.application.routes.url_helpers.url_for(attachment)
         }
       }

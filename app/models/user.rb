@@ -1,3 +1,5 @@
+require_relative '../../lib/mini_magick/helper'
+
 class User < ApplicationRecord
   extend Memoist
   
@@ -15,6 +17,7 @@ class User < ApplicationRecord
   has_many :followers, class_name: 'User', through: :follow_backs, source: :user
   has_many :likes
   has_many :liked_posts, class_name: 'Post', through: :likes, source: :post
+  has_one_attached :profile_picture
   
   before_validation :set_tmp_username, on: :create
   
@@ -123,6 +126,11 @@ class User < ApplicationRecord
     Like.where(user_id: self.id, post_id: post_id).count > 0
   end
   memoize :like?
+  
+  def squared_profile_picture(size)
+    variation = ActiveStorage::Variation.new(MiniMagickHelper.resize_to_fill(width: size, height: size, blob: profile_picture.blob))
+    ActiveStorage::Variant.new(profile_picture.blob, variation)
+  end
   
   private
   def set_tmp_username

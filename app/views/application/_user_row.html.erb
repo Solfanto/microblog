@@ -2,7 +2,11 @@
   <div class="post-body">
     <div class="user">
       <a href="<%= user_path(username: user.username) %>">
-        <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+        <% if user.profile_picture&.attached? && user.profile_picture&.variable? %>
+          <%= image_tag(user.squared_profile_picture(50), class: "profile-picture") %>
+        <% else %>
+          <div class="profile-picture"></div>
+        <% end %>
         <span class="display-name"><%= user.display_name %></span>
         <small class="username">@<%= user.username %></small>
       </a>

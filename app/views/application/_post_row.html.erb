@@ -4,13 +4,21 @@
     <div class="user">
       <% if post.repost && post.content.blank? %>
       <a href="<%= user_path(username: post.original_user.username) %>">
-        <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+        <% if post.user&.profile_picture&.attached? && post.user&.profile_picture&.variable? %>
+          <%= image_tag(post.user.squared_profile_picture(50), class: "profile-picture") %>
+        <% else %>
+          <div class="profile-picture"></div>
+        <% end %>
         <span class="display-name"><%= post.original_user.display_name %></span>
         <small class="username">@<%= post.original_user.username %></small>
       </a>
       <% else %>
       <a href="<%= user_path(username: post.username) %>">
-        <img src="https://via.placeholder.com/50x50" width="50" height="50" class="profile-picture">
+        <% if post.user&.profile_picture&.attached? && post.user&.profile_picture&.variable? %>
+          <%= image_tag(post.user.squared_profile_picture(50), class: "profile-picture") %>
+        <% else %>
+          <div class="profile-picture"></div>
+        <% end %>
         <span class="display-name"><%= post.display_name %></span>
         <small class="username">@<%= post.username %></small>
       </a>

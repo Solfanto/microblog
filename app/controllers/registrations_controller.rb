@@ -8,6 +8,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
   
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :display_name, :bio, :website, :city, :is_default_username])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :display_name, :bio, :website, :city, :is_default_username, :profile_picture])
   end
 end

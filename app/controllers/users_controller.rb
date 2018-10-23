@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find_by(username: params[:username])
+    render "not_found" and return if @user.nil?
+    
     @posts = @user.public_timeline_posts.page(params[:page]).per(10).without_count
   end
   
