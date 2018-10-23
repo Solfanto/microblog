@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_22_203726) do
+ActiveRecord::Schema.define(version: 2018_10_23_145331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2018_10_22_203726) do
     t.boolean "private_account", default: false
     t.datetime "banned_at"
     t.integer "medias_count", default: 0
+    t.boolean "is_default_username", default: true
     t.index "to_tsvector('english'::regconfig, (bio)::text)", name: "users_bio_index", using: :gin
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
