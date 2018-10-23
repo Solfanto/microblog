@@ -53,9 +53,9 @@
       <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>" rel="nofollow"><%= icon("fas", "comment") %> Reply</a>
       <% unless post.user_id == current_user&.id || (post.repost? && post.original_user_id == current_user&.id) %><a href="javascript:;" data-action="repost" data-json="#thread-for-post-<%= post.id %>" rel="nofollow"><%= icon("fas", "retweet") %> Repost</a><% end %>
       <% if current_user&.like?(post.id) %>
-      <a href="<%= like_path(post.id) %>" data-method="delete" rel="nofollow"><%= icon("fas", "heart") %> Like</a>
+      <a href="<%= like_path(post.id) %>" data-method="delete" rel="nofollow" data-remote="true"><%= icon("fas", "heart") %> Like</a>
       <% else %>
-      <a href="<%= like_path(post.id) %>" data-method="post" rel="nofollow"><%= icon("far", "heart") %> Like</a>
+      <a href="<%= like_path(post.id) %>" data-method="post" rel="nofollow" data-remote="true"><%= icon("far", "heart") %> Like</a>
       <% end %>
       <!-- <a href="javascript:;" data-action="privateMessage" rel="nofollow"><%= icon("fas", "envelope") %> PM</a> -->
     </div>

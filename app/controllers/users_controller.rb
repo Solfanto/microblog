@@ -28,11 +28,17 @@ class UsersController < ApplicationController
   
   def like
     current_user.like(params[:post_id])
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+      format.html {redirect_back(fallback_location: root_path)}
+    end
   end
   
   def unlike
     current_user.unlike(params[:post_id])
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+      format.html {redirect_back(fallback_location: root_path)}
+    end
   end
 end
