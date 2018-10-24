@@ -9,21 +9,26 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <% if current_user %>
-        <li class="nav-item active d-none d-md-block d-lg-none">
+        <li class="nav-item <%= 'active' if controller.action_name == "timeline" %> d-none d-md-block d-lg-none">
           <a class="nav-link" href="<%= root_path %>"><%= icon("fas", "home") %></a>
         </li>
-        <li class="nav-item active d-md-none d-lg-block">
+        <li class="nav-item <%= 'active' if controller.action_name == "timeline" %> d-md-none d-lg-block">
           <a class="nav-link" href="<%= root_path %>"><%= icon("fas", "home") %> Home</a>
         </li>
-        <li class="nav-item d-none d-md-block d-lg-none">
-          <a class="nav-link" href="#"><%= icon("far", "bell") %></a>
+        <li class="nav-item <%= 'active' if controller.controller_name == "notifications" %> d-none d-md-block d-lg-none">
+          <a class="nav-link" href="<%= notifications_path %>"><%= icon("far", "bell") %></a>
         </li>
-        <li class="nav-item d-md-none d-lg-block">
-          <a class="nav-link" href="#"><%= icon("far", "bell") %> Notifications</a>
+        <li class="nav-item <%= 'active' if controller.controller_name == "notifications" %> d-md-none d-lg-block">
+          <a class="nav-link" href="<%= notifications_path %>">
+            <%= icon("far", "bell") %> Notifications
+            <% if current_user.unread_notifications_count > 0 %>
+            <span class="badge badge-primary"><%= current_user.unread_notifications_count %></span>
+            <% end %>
+          </a>
         </li>
-        <li class="nav-item d-none d-md-block d-lg-none">
+        <!-- <li class="nav-item d-none d-md-block d-lg-none">
           <a class="nav-link" href="#"><%= icon("far", "envelope") %></a>
-        </li>
+        </li> -->
         <!-- <li class="nav-item d-md-none d-lg-block">
           <a class="nav-link" href="#"><%= icon("far", "envelope") %> Messages</a>
         </li> -->

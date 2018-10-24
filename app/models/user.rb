@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_posts, class_name: 'Post', through: :likes, source: :post
   has_one_attached :profile_picture
+  has_many :notifications, dependent: :destroy
   
   before_validation :set_tmp_username, on: :create
   

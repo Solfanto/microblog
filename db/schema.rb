@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_23_145331) do
+ActiveRecord::Schema.define(version: 2018_10_24_003914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,22 @@ ActiveRecord::Schema.define(version: 2018_10_23_145331) do
     t.index ["user_id"], name: "index_mentions_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "message"
+    t.string "notification_type", comment: "followed/followed_back/replied/reposted/..."
+    t.datetime "read_at"
+    t.string "primary_item_type"
+    t.bigint "primary_item_id"
+    t.string "secondary_item_type"
+    t.bigint "secondary_item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["primary_item_type", "primary_item_id"], name: "index_notifications_on_primary_item"
+    t.index ["secondary_item_type", "secondary_item_id"], name: "index_notifications_on_secondary_item"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "post_threads", force: :cascade do |t|
     t.jsonb "tree", default: {}, comment: "{\"id\": 1, content: \"\", replies: []}"
     t.datetime "created_at", null: false
@@ -149,6 +165,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_145331) do
     t.datetime "banned_at"
     t.integer "medias_count", default: 0
     t.boolean "is_default_username", default: true
+    t.integer "unread_notifications_count", default: 0
+    t.boolean "email_notifications_enabled", default: true
     t.index "to_tsvector('english'::regconfig, (bio)::text)", name: "users_bio_index", using: :gin
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

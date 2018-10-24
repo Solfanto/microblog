@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-lg-1">
+    <%= render partial: "panels/profile", locals: { user: current_user } %>
+    <%= render partial: "panels/footer", locals: { only_sidebar: true } %>
+  </div>
+  <div class="col-lg-2">
+    <div class="panel timeline no-padding">
+      <%= render partial: "post_row", locals: { post: @post } %>
+    </div>
+  </div>
+</div>

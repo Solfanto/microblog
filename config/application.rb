@@ -17,5 +17,7 @@ module SiteMicroblog
     # the framework and any gems in your application.
     
     # config.autoload_paths += %W( app/omni_auth/strategies )
+    
+    config.active_job.queue_name_prefix = "microblog_#{Rails.env}"
   end
 end

@@ -4,8 +4,8 @@
     <div class="user">
       <% if post.repost && post.content.blank? %>
       <a href="<%= user_path(username: post.original_user.username) %>">
-        <% if post.user&.profile_picture&.attached? && post.user&.profile_picture&.variable? %>
-          <%= image_tag(post.user.squared_profile_picture(50), class: "profile-picture") %>
+        <% if post.original_user&.profile_picture&.attached? && post.original_user&.profile_picture&.variable? %>
+          <%= image_tag(post.original_user.squared_profile_picture(50), class: "profile-picture") %>
         <% else %>
           <div class="profile-picture"></div>
         <% end %>
@@ -25,7 +25,7 @@
       <% end %>
       <small>
         &middot;
-        <a href="#" class="created-at"><%= time_ago_in_words post.created_at %></a>
+        <a href="<%= post_path(post) %>" class="created-at"><%= time_ago_in_words post.created_at %> ago</a>
       </small>
     </div>
     <% if post.original_post_id && post.original_user_id && !post.repost %>
@@ -35,14 +35,14 @@
       <%= post.full_thread.to_json.html_safe %>
     </script>
     <% if !post.content.blank? %>
-    <%= simple_format(post.content, class: "content") %>
+    <%= simple_format(html_escape(post.content), class: "content") %>
     <% elsif post.repost && post.content.blank? %>
-    <%= simple_format(post.original_post.content, class: "content") %>
+    <%= simple_format(html_escape(post.original_post.content), class: "content") %>
     <div class="text-muted"><em>Reposted by @<%= post.username %></em></div>
     <% end %>
     <% if post.repost && !post.content.blank? %>
     <blockquote class="blockquote panel">
-      <%= simple_format(post.original_post.content, class: "mb-0") %>
+      <%= simple_format(html_escape(post.original_post.content), class: "mb-0") %>
       <footer class="blockquote-footer"><%= post.original_user.display_name %></footer>
     </blockquote>
     <% end %>
@@ -57,6 +57,14 @@
         <% end %>
       </div>
     <% end %>
+    <div class="reactions">
+      <% if post.likes_count > 0 %>
+      <div><em>This post got liked by <%= pluralize(post.likes_count, 'person') %>.</em></div>
+      <% end %>
+      <% if post.reposts_count > 0 %>
+      <div><em>This post got reposted by <%= pluralize(post.likes_count, 'person') %>.</em></div>
+      <% end %>
+    </div>
     <div class="actions">
       <a href="javascript:;" data-action="reply" data-json="#thread-for-post-<%= post.id %>" rel="nofollow"><%= icon("fas", "comment") %> Reply</a>
       <% unless post.user_id == current_user&.id || (post.repost? && post.original_user_id == current_user&.id) %><a href="javascript:;" data-action="repost" data-json="#thread-for-post-<%= post.id %>" rel="nofollow"><%= icon("fas", "retweet") %> Repost</a><% end %>

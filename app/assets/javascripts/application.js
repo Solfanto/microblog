@@ -175,4 +175,9 @@ $(document).on('turbolinks:load', function() {
       document.dispatchEvent(event);
     }}
   });
+  
+  // Notifications
+  $('.notification-row[data-target]').on('click', function (event) {
+    Turbolinks.visit($(this).attr('data-target'));
+  });
 });

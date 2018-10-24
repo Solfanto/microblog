@@ -75,8 +75,27 @@ a.disabled, span.nav-link {
   color: $primary;
 }
 
+.notification-row {
+  min-height: 66px;
+  border-top: 1px solid $light;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  
+  &[data-target] {
+    cursor: pointer;
+  }
+  
+  &:hover {
+    background-color: darken($secondary, 4%);
+  }
+}
+
 .post-row, .user-row {
+  min-height: 70px;
   padding-left: 70px;
+  
   .profile-picture {
     float: left;
     margin-left: -60px;
@@ -117,7 +136,12 @@ a.disabled, span.nav-link {
   }
   
   &:hover {
-    background-color: darken(#1c2938, 4%);
+    background-color: darken($secondary, 4%);
+  }
+  
+  .reactions {
+    font-size: 0.9em;
+    color: lighten($secondary, 30%);
   }
 }
 

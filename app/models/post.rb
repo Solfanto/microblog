@@ -7,8 +7,9 @@ class Post < ApplicationRecord
   has_many :posts
   has_many_attached :attachments
   
-  before_validation :set_user_info, on: :create 
-  before_validation :set_post_thread, on: :create 
+  before_validation :set_user_info, on: :create
+  before_validation :set_post_thread, on: :create
+  after_commit :send_notifications, on: :create
   after_commit :update_post_thread, on: :create
   
   include PgSearch
@@ -107,5 +108,9 @@ class Post < ApplicationRecord
     end
     self.post_thread.tree = t
     self.post_thread.save
+  end
+  
+  def send_notifications
+    NotificationsJob.perform_later(self)
   end
 end

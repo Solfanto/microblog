@@ -1,0 +1,4 @@
+<div class="notification-row <%= 'bg-dark' unless notification.read_at.nil? %>" data-target="<%= notification_path(notification) %>">
+  <%= notification.message.html_safe %><br>
+  <small><em><%= time_ago_in_words notification.created_at %> ago</em></small>
+</div>

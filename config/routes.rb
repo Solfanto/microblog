@@ -29,4 +29,7 @@ Rails.application.routes.draw do
   
   # Static
   get 'about', to: 'static#about'
+  
+  # Notifications
+  resources :notifications, only: [:show, :index]
 end
