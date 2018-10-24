@@ -182,22 +182,22 @@ class FeaturesFlowTest < ActionDispatch::IntegrationTest
     assert_equal 1, User.find_by(username: "alice").following_count
   end
   
-  # test "Mention someone" do
-  #   login_as(@alice, scope: :user, run_callbacks: false)
-  #
-  #   visit "/"
-  #
-  #   within("#new_post") do
-  #     fill_in "post[content]", with: "Hello @#{@bob.username}"
-  #   end
-  #   click_on "Post"
-  #
-  #   reset!
-  #
-  #   login_as(@bob, scope: :user, run_callbacks: false)
-  #
-  #   visit "/notifications"
-  #
-  #   assert_text "#{@alice.display_name} mentioned you"
-  # end
+  test "Mention someone" do
+    login_as(@alice, scope: :user, run_callbacks: false)
+
+    visit "/"
+
+    within("#new_post") do
+      fill_in "post[content]", with: "Hello @#{@bob.username}"
+    end
+    click_on "Post"
+
+    reset!
+
+    login_as(@bob, scope: :user, run_callbacks: false)
+
+    visit "/notifications"
+
+    assert_text "#{@alice.display_name} mentioned you"
+  end
 end

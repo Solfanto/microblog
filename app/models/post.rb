@@ -11,6 +11,7 @@ class Post < ApplicationRecord
   before_validation :set_post_thread, on: :create
   after_commit :send_notifications, on: :create
   after_commit :update_post_thread, on: :create
+  after_commit :detect_mentions, on: :create
   
   include PgSearch
   pg_search_scope :search, against: [:content], using: {tsearch: {dictionary: "english"}}, ignoring: :accents
@@ -110,6 +111,10 @@ class Post < ApplicationRecord
     end
     self.post_thread.tree = t
     self.post_thread.save
+  end
+  
+  def detect_mentions
+    MentionsJob.perform_later(self)
   end
   
   def send_notifications

@@ -35,14 +35,14 @@
       <%= post.full_thread.to_json.html_safe %>
     </script>
     <% if !post.content.blank? %>
-    <%= simple_format(html_escape(post.content), class: "content") %>
+    <%= simple_format(html_escape(post.content).gsub(/\@([a-zA-Z0-9_]+)/, '<a href="/u/\1">@\1</a>'), class: "content") %>
     <% elsif post.repost && post.content.blank? %>
-    <%= simple_format(html_escape(post.original_post.content), class: "content") %>
+    <%= simple_format(html_escape(post.original_post.content).gsub(/\@([a-zA-Z0-9_]+)/, '<a href="/u/\1">@\1</a>'), class: "content") %>
     <div class="text-muted"><em>Reposted by @<%= post.username %></em></div>
     <% end %>
     <% if post.repost && !post.content.blank? %>
     <blockquote class="blockquote panel">
-      <%= simple_format(html_escape(post.original_post.content), class: "mb-0") %>
+      <%= simple_format(html_escape(post.original_post.content).gsub(/\@([a-zA-Z0-9_]+)/, '<a href="/u/\1">@\1</a>'), class: "mb-0") %>
       <footer class="blockquote-footer"><%= post.original_user.display_name %></footer>
     </blockquote>
     <% end %>

@@ -15,7 +15,7 @@
         <span class="badge badge-pill badge-light">follows you</span>
       <% end %>
     </div>
-    <%= simple_format(html_escape(user.bio), class: "bio") %>
+    <%= simple_format(html_escape(user.bio).gsub(/\@([a-zA-Z0-9_]+)/, '<a href="/u/\1">@\1</a>'), class: "bio") %>
     <div class="actions text-right">
       <% if current_user && user != current_user %>
         <% if !current_user.follow?(user) %>
