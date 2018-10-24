@@ -3,6 +3,7 @@ require_relative '../config/environment'
 require 'rails/test_help'
 require 'capybara/rails'
 require 'capybara/minitest'
+require 'rails_helper'
 
 class ActionDispatch::IntegrationTest
   # Make the Capybara DSL available in all integration tests

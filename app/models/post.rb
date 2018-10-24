@@ -20,6 +20,8 @@ class Post < ApplicationRecord
   validates :content, presence: true, unless: :repost?
   validate :cannot_repost_self
   validates :attachments, blob: { content_type: ['image/gif', 'image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'video/mp4', 'video/webm', 'video/ogg'], size_range: 0..25.megabytes }
+  validates :original_user, presence: true, if: :repost?
+  validates :original_post, presence: true, if: :repost?
   
   attr_accessor :current
   

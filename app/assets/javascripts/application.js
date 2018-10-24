@@ -131,7 +131,6 @@ $(document).on('turbolinks:load', function() {
     var post = data.find(function(e) { return e.current == true });
     
     if (typeof post != 'undefined') {
-      modal.find('.modal-title').text('Reply to @' + post.username);
       if (post.profilePicture) {
         modal.find('.profile-picture').attr("src", post.profilePicture).show();
       }

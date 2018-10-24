@@ -1,5 +1,5 @@
 <% options = (post.original_post_id && post.original_user_id || post.replies.count > 0) ? { 'data-action' => 'openThread', 'data-target' => '#threadModal', 'data-json' => "#thread-for-post-#{post.id}" } : {} %>
-<%= content_tag(:div, options.merge(class: 'post-row')) do %>
+<%= content_tag(:div, options.merge(class: 'post-row', id: "post-row-#{post.id}")) do %>
   <div class="post-body">
     <div class="user">
       <% if post.repost && post.content.blank? %>
