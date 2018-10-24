@@ -1,3 +1,4 @@
+/*jshint undef: true */
 /*global jQuery: true */
 
 /*!
@@ -5,24 +6,15 @@
    Infinite Scroll
    --------------------------------
    + https://github.com/paulirish/infinite-scroll
-   + version 2.1.0
+   + version 2.0.2
    + Copyright 2011/12 Paul Irish & Luke Shumard
    + Licensed under the MIT license
 
    + Documentation: http://infinite-scroll.com/
 */
 
-// Uses AMD or browser globals to create a jQuery plugin.
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else {
-        // Browser globals
-        factory(jQuery);
-    }
-}(function ($, undefined) {
-    'use strict';
+(function (window, $, undefined) {
+    "use strict";
 
     $.infinitescroll = function infscr(options, callback, element) {
         this.element = $(element);
@@ -37,9 +29,9 @@
         loading: {
             finished: undefined,
             finishedMsg: "<em></em>",
-            img: undefined,
+            img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=",
             msg: null,
-            msgText: '<em>Loading...</em>',
+            msgText: "<em>Loading...</em>",
             selector: null,
             speed: 'fast',
             start: undefined
@@ -56,11 +48,11 @@
         debug: false,
         behavior: undefined,
         binder: $(window), // used to cache the selector
-        nextSelector: 'div.navigation a:first',
-        navSelector: 'div.navigation',
+        nextSelector: "div.navigation a:first",
+        navSelector: "div.navigation",
         contentSelector: null, // rename to pageFragment
         extraScrollPx: 150,
-        itemSelector: 'div.post',
+        itemSelector: "div.post",
         animate: false,
         pathParse: undefined,
         dataType: 'html',
@@ -143,7 +135,7 @@
             opts.loading.selector = opts.loading.selector || opts.contentSelector;
 
             // Define loading.msg
-            opts.loading.msg = opts.loading.msg || $('<div id="infscr-loading"><div>' + opts.loading.msgText + '</div></div>');
+            opts.loading.msg = opts.loading.msg || $('<div id="infscr-loading"><img alt="Loading..." src="' + opts.loading.img + '" /><div>' + opts.loading.msgText + '</div></div>');
 
             // Preload loading.img
             (new Image()).src = opts.loading.img;
@@ -152,7 +144,7 @@
             // computed as: height of the document + top offset of container - top offset of nav link
             if(opts.pixelsFromNavToBottom === undefined) {
                 opts.pixelsFromNavToBottom = $(document).height() - $(opts.navSelector).offset().top;
-                this._debug('pixelsFromNavToBottom: ' + opts.pixelsFromNavToBottom);
+                this._debug("pixelsFromNavToBottom: " + opts.pixelsFromNavToBottom);
             }
 
             var self = this;
@@ -184,14 +176,14 @@
                 }
 
                 if (opts.prefill) {
-                    $window.bind('resize.infinite-scroll', instance._prefill);
+                    $window.bind("resize.infinite-scroll", instance._prefill);
                 }
             };
 
             if (options.debug) {
                 // Tell IE9 to use its built-in console
-                if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log === 'object') {
-                    ['log','info','warn','error','assert','dir','clear','profile','profileEnd']
+                if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log === "object") {
+                    ["log","info","warn","error","assert","dir","clear","profile","profileEnd"]
                         .forEach(function (method) {
                             console[method] = this.call(console[method], console);
                         }, Function.prototype.bind);
@@ -214,7 +206,7 @@
             var $window = $(window);
 
             function needsPrefill() {
-                return ( $(instance.options.contentSelector).height() <= $window.height() );
+                return (instance.options.contentSelector.height() <= $window.height());
             }
 
             this._prefill = function() {
@@ -222,9 +214,9 @@
                     instance.scroll();
                 }
 
-                $window.bind('resize.infinite-scroll', function() {
+                $window.bind("resize.infinite-scroll", function() {
                     if (needsPrefill()) {
-                        $window.unbind('resize.infinite-scroll');
+                        $window.unbind("resize.infinite-scroll");
                         instance.scroll();
                     }
                 });
@@ -292,7 +284,7 @@
                     path = path.match(/^(.*?page=)1(\/.*|$)/).slice(1);
                     return path;
                 } else {
-                    this._debug("Sorry, we couldn't parse your Next (Previous Posts) URL. Verify your the css selector points to the correct A tag. If you still get this error: yell, scream, and kindly ask for help at infinite-scroll.com.");
+                    this._debug('Sorry, we couldn\'t parse your Next (Previous Posts) URL. Verify your the css selector points to the correct A tag. If you still get this error: yell, scream, and kindly ask for help at infinite-scroll.com.');
                     // Get rid of isInvalidPage to allow permalink to state
                     opts.state.isInvalidPage = true;  //prevent it from running on this page.
                 }
@@ -354,12 +346,6 @@
                         data = '<div>' + data + '</div>';
                         data = $(data).find(opts.itemSelector);
                     }
-
-                    // if it didn't return anything
-                    if (data.length === 0) {
-                        return this._error('end');
-                    }
-
                     break;
 
                 case 'append':
@@ -551,7 +537,7 @@
             opts.state.currPage++;
 
             // Manually control maximum page
-            if ( opts.maxPage !== undefined && opts.state.currPage > opts.maxPage ){
+            if ( opts.maxPage != undefined && opts.state.currPage > opts.maxPage ){
                 opts.state.isBeyondMaxPage = true;
                 this.destroy();
                 return;
@@ -584,7 +570,7 @@
                         url: desturl,
                         dataType: opts.dataType,
                         complete: function infscr_ajax_callback(jqXHR, textStatus) {
-                            condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === 'success' || textStatus === 'notmodified');
+                            condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === "success" || textStatus === "notmodified");
                             if (condition) {
                                 instance._loadcallback(box, jqXHR.responseText, desturl);
                             } else {
@@ -601,7 +587,7 @@
                         type: 'GET',
                         url: desturl,
                         success: function (data, textStatus, jqXHR) {
-                            condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === 'success' || textStatus === 'notmodified');
+                            condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === "success" || textStatus === "notmodified");
                             if (opts.appendCallback) {
                                 // if appendCallback is true, you must defined template in options.
                                 // note that data passed into _loadcallback is already an html (after processed in opts.template(data)).
@@ -614,7 +600,7 @@
                                         instance._error('end');
                                     }
                                 } else {
-                                    instance._debug('template must be defined.');
+                                    instance._debug("template must be defined.");
                                     instance._error('end');
                                 }
                             } else {
@@ -627,7 +613,7 @@
                             }
                         },
                         error: function() {
-                            instance._debug('JSON ajax request failed.');
+                            instance._debug("JSON ajax request failed.");
                             instance._error('end');
                         }
                     });
@@ -742,7 +728,7 @@
                         return false;
                     }
 
-                    if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
+                    if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
                         // return $.error('No such method ' + options + ' for Infinite Scroll');
                         return false;
                     }
@@ -800,10 +786,10 @@
 
     event.special.smartscroll = {
         setup: function () {
-            $(this).bind('scroll', event.special.smartscroll.handler);
+            $(this).bind("scroll", event.special.smartscroll.handler);
         },
         teardown: function () {
-            $(this).unbind('scroll', event.special.smartscroll.handler);
+            $(this).unbind("scroll", event.special.smartscroll.handler);
         },
         handler: function (event, execAsap) {
             // Save the context
@@ -811,17 +797,18 @@
             args = arguments;
 
             // set correct event type
-            event.type = 'smartscroll';
+            event.type = "smartscroll";
 
             if (scrollTimeout) { clearTimeout(scrollTimeout); }
             scrollTimeout = setTimeout(function () {
                 $(context).trigger('smartscroll', args);
-            }, execAsap === 'execAsap' ? 0 : 100);
+            }, execAsap === "execAsap" ? 0 : 100);
         }
     };
 
     $.fn.smartscroll = function (fn) {
-        return fn ? this.bind('smartscroll', fn) : this.trigger('smartscroll', ['execAsap']);
+        return fn ? this.bind("smartscroll", fn) : this.trigger("smartscroll", ["execAsap"]);
     };
 
-}));
+
+})(window, jQuery);

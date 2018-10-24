@@ -7,9 +7,15 @@
     <div class="panel timeline no-padding">
       <%= render partial: "new_post_form" %>
       <div id="infinite-scroll-container" class="posts">
+        <% if @posts.length > 0 %>
         <div class="page">
           <%= render partial: "post_row", collection: @posts, as: :post %>
         </div>
+        <% elsif params[:page].to_i <= 1 %>
+        <div class="post-row">
+          No post.
+        </div>
+        <% end %>
       </div>
     </div>
     <%= paginate @posts, remote: true %>
