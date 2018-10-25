@@ -32,4 +32,7 @@ Rails.application.routes.draw do
   
   # Notifications
   resources :notifications, only: [:show, :index]
+  
+  # Letsencrypt
+  get '/.well-known/acme-challenge/:id', to: 'static#letsencrypt'
 end
