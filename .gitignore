@@ -31,3 +31,4 @@
 /config/master.key
 .rbenv-vars
 TODO.md
+/config/deploy/*.rb
